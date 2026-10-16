@@ -34,5 +34,8 @@ html = html
   );
 mkdirSync(path.join(root, 'dist'), { recursive: true });
 writeFileSync(path.join(root, 'dist/index.html'), html);
+mkdirSync(path.join(root, 'docs'), { recursive: true });
+writeFileSync(path.join(root, 'docs/index.html'), html);
+writeFileSync(path.join(root, 'docs/.nojekyll'), '');
 writeFileSync(path.join(root, 'Coastline-Kart.html'), html);
 console.log(JSON.stringify({ built: true, bytes: Buffer.byteLength(html), externalAssets: 0 }));

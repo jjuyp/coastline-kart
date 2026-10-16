@@ -3,8 +3,10 @@
 A finished, browser-native coastal kart racer. All geometry, textures, signage,
 music and sound are procedurally generated locally. No Roblox Studio or Blender.
 
-**[Play online — 夕陽海岸盃](https://coastline-kart-riviera-run.jjuyp.chatgpt.site/)**
+**[Play online — 夕陽海岸盃](https://jjuyp.github.io/coastline-kart/)**
 No login or installation is required.
+
+Public source: [jjuyp/coastline-kart](https://github.com/jjuyp/coastline-kart).
 
 ![Coastline Kart gameplay](docs/screenshots/gameplay.png)
 
@@ -44,7 +46,10 @@ camera, pooled VFX, UI and rendering. `src/audio.js` synthesizes original audio.
 of the AI drivers.
 
 For a clean checkout: `npm ci`, then `npm run build`. Run `npm run dev`
-for localhost preview. The build emits `dist/index.html` and the standalone HTML.
+for localhost preview. The build emits `dist/index.html`, `docs/index.html` and
+the standalone HTML. GitHub Pages publishes the committed `/docs` folder from
+`main`; after changing the game, rebuild and commit the generated HTML before
+pushing to update the playable site. `docs/.nojekyll` preserves the static build.
 Development helpers can reuse the adjacent tidepool-jelly dependency installation
 on this workstation; shipped HTML has no such dependency.
 
