@@ -54,6 +54,8 @@ export function createTrack() {
     curve,
     length,
     width: 16,
+    barrierOffset: 10.4,
+    barrierHalfWidth: 0.55,
     samples,
     count,
     sample,

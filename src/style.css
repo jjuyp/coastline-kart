@@ -1078,7 +1078,6 @@ body.race-results #hud {
     user-select: none;
     -webkit-user-select: none;
   }
-  .touch-controls button:active,
   .touch-controls button.pressed {
     background: #ff8759bb;
     transform: scale(0.95);

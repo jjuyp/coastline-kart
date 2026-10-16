@@ -394,7 +394,7 @@ export function createWorld(scene, track) {
     for (const side of [-1, 1]) {
       // Open the start apron and alternate open coastal guardrail sections.
       if (t > 0.96 && side > 0) continue;
-      const p = f.position.clone().addScaledVector(f.normal, side * 10.4);
+      const p = f.position.clone().addScaledVector(f.normal, side * track.barrierOffset);
       const color = Math.floor(i / 4) % 5 === 0 ? '#269eaa' : i % 8 < 4 ? '#f1e9cf' : '#e96b4d';
       put(barrier, color, transform([p.x, p.y - 0.08, p.z], [1, 1, 0.98], [0, f.yaw, 0]));
     }

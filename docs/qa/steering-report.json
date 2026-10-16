@@ -4,49 +4,49 @@
     {
       "label": "standard ArrowLeft",
       "direction": "left",
-      "signedHeading": -0.027051800418317395,
+      "signedHeading": -0.02686107698912138,
       "pass": true
     },
     {
       "label": "standard ArrowRight",
       "direction": "right",
-      "signedHeading": 0.027114683564200992,
+      "signedHeading": 0.028697232796267513,
       "pass": true
     },
     {
       "label": "standard KeyA",
       "direction": "left",
-      "signedHeading": -0.026269804757857063,
+      "signedHeading": -0.027729397609567497,
       "pass": true
     },
     {
       "label": "standard KeyD",
       "direction": "right",
-      "signedHeading": 0.02808358681950357,
+      "signedHeading": 0.03099914304313578,
       "pass": true
     },
     {
       "label": "high ArrowLeft",
       "direction": "left",
-      "signedHeading": -0.026134421670969854,
+      "signedHeading": -0.027729397609567497,
       "pass": true
     },
     {
       "label": "high ArrowRight",
       "direction": "right",
-      "signedHeading": 0.03464369776946391,
+      "signedHeading": 0.02613442167096991,
       "pass": true
     },
     {
       "label": "high KeyA",
       "direction": "left",
-      "signedHeading": -0.026202297801224683,
+      "signedHeading": -0.026134421670969854,
       "pass": true
     },
     {
       "label": "high KeyD",
       "direction": "right",
-      "signedHeading": 0.026470130327606978,
+      "signedHeading": 0.026601870797204497,
       "pass": true
     },
     {
@@ -58,23 +58,23 @@
     {
       "label": "drift boost left",
       "pass": true,
-      "boost": 1.1333333333333333
+      "boost": 1.0916666666666668
     },
     {
       "label": "drift ArrowRight",
       "direction": "right",
-      "signedHeading": 0.36874769956625647,
+      "signedHeading": 0.3746899412843648,
       "pass": true
     },
     {
       "label": "drift boost right",
       "pass": true,
-      "boost": 1.1333333333333333
+      "boost": 1.0916666666666668
     },
     {
       "label": "touch left",
       "direction": "left",
-      "signedHeading": -0.029281379875907176,
+      "signedHeading": -0.029344524066052757,
       "pass": true
     },
     {

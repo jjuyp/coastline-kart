@@ -56,6 +56,7 @@ export class Race {
         boost: 0,
         padCooldown: 0,
         wallCooldown: 0,
+        wallContact: 0,
         slip: 0,
         aiLane: lane,
         travel: 0,
@@ -93,6 +94,7 @@ export class Race {
     c.angular = 0;
     c.driftCharge = 0;
     c.drifting = false;
+    c.wallContact = 0;
     this.penalty += 2;
     this.events.push({ type: 'rescue' });
   }
@@ -121,16 +123,21 @@ export class Race {
       b = samples[idx + 1];
     const px = a.position.x + (b.position.x - a.position.x) * fx,
       pz = a.position.z + (b.position.z - a.position.z) * fx;
-    const offset = (c.x - px) * a.normal.x + (c.z - pz) * a.normal.z;
+    const dx = b.position.x - a.position.x,
+      dz = b.position.z - a.position.z,
+      segmentLength = Math.hypot(dx, dz),
+      nx = -dz / segmentLength,
+      nz = dx / segmentLength;
+    const offset = (c.x - px) * nx + (c.z - pz) * nz;
     return {
       fraction: (idx + fx) / n,
       offset,
       y: a.position.y + (b.position.y - a.position.y) * fx,
-      nx: a.normal.x,
-      nz: a.normal.z,
+      nx,
+      nz,
       px,
       pz,
-      yaw: a.yaw,
+      yaw: Math.atan2(dx, dz),
       curvature: a.curvature,
     };
   }
@@ -226,6 +233,7 @@ export class Race {
     c.boost = Math.max(0, c.boost - dt);
     c.padCooldown = Math.max(0, c.padCooldown - dt);
     c.wallCooldown = Math.max(0, c.wallCooldown - dt);
+    c.wallContact = Math.max(0, c.wallContact - dt);
     const drifting = !!input.drift && c.speed > 10 && Math.abs(c.steer) > 0.12;
     if (drifting) {
       c.driftCharge = Math.min(2.8, c.driftCharge + dt);
@@ -246,8 +254,12 @@ export class Race {
       facingZ = Math.cos(c.yaw);
     const forward = c.vx * facingX + c.vz * facingZ;
     if (forward < 0) accel += 5;
+    // A powered kart can steer out of contact even after a head-on stop.
+    const steeringSpeed = c.wallContact > 0 && throttle > 0 && !brake ? Math.max(v, 11) : v;
     const targetAngular =
-      c.steer * ((clamp(v, 0, 40) * 0.083) / (1 + v * 0.026)) * (drifting ? 1.25 : 1);
+      c.steer *
+      ((clamp(steeringSpeed, 0, 40) * 0.083) / (1 + steeringSpeed * 0.026)) *
+      (drifting ? 1.25 : 1);
     c.angular += (targetAngular - c.angular) * (1 - Math.exp(-dt * (drifting ? 6 : 10)));
     c.yaw = wrapAngle(c.yaw + c.angular * dt);
     const dirX = Math.sin(c.yaw),
@@ -269,20 +281,40 @@ export class Race {
     const p = this.project(c);
     c.offset = p.offset;
     c.y = p.y;
-    // Wide shoulder slows the kart; continuous soft barriers catch lateral impacts.
-    if (Math.abs(p.offset) > this.track.width / 2 - 1.05) {
-      const sign = Math.sign(p.offset),
-        limit = this.track.width / 2 - 1.05;
-      c.x = p.px + p.nx * limit * sign;
-      c.z = p.pz + p.nz * limit * sign;
+    // Match the visible barrier and account for the kart's rotated footprint.
+    const innerEdge = this.track.barrierOffset - this.track.barrierHalfWidth - 0.04;
+    let relativeYaw = wrapAngle(c.yaw - p.yaw);
+    let limit =
+      innerEdge - (1.2 * Math.abs(Math.cos(relativeYaw)) + 1.75 * Math.abs(Math.sin(relativeYaw)));
+    if (Math.abs(p.offset) > limit) {
+      const sign = Math.sign(p.offset);
+      c.wallContact = 0.15;
       const outward = (c.vx * p.nx + c.vz * p.nz) * sign;
       if (outward > 0) {
-        c.vx -= p.nx * outward * sign * 1.22;
-        c.vz -= p.nz * outward * sign * 1.22;
-        c.vx *= 0.87;
-        c.vz *= 0.87;
+        // Remove only velocity into the wall. Time-based drag preserves sliding
+        // instead of multiplying the entire velocity down 120 times per second.
+        const drag = Math.exp(-0.45 * dt);
+        c.vx = (c.vx - p.nx * outward * sign) * drag;
+        c.vz = (c.vz - p.nz * outward * sign) * drag;
       }
-      if (c.wallCooldown <= 0 && v > 7) {
+      const noseIntoWall = (Math.sin(c.yaw) * p.nx + Math.cos(c.yaw) * p.nz) * sign;
+      if (c.id === 0 && v < 7.5 && throttle > 0 && !brake && noseIntoWall > 0.15) {
+        // Gentle bumper deflection frees automatic-throttle players as well.
+        // Preserve reverse-facing travel, but choose forward for a square hit.
+        const tangentYaw = p.yaw + (Math.cos(relativeYaw) < -0.25 ? Math.PI : 0);
+        c.yaw = wrapAngle(c.yaw + clamp(wrapAngle(tangentYaw - c.yaw), -1.1 * dt, 1.1 * dt));
+        relativeYaw = wrapAngle(c.yaw - p.yaw);
+        limit =
+          innerEdge -
+          (1.2 * Math.abs(Math.cos(relativeYaw)) + 1.75 * Math.abs(Math.sin(relativeYaw)));
+      }
+      // Correct penetration along the normal only; rebuilding from a sampled
+      // center point introduced a sideways/tangential creep at every contact.
+      const penetration = Math.max(0, Math.abs(p.offset) - limit);
+      c.x -= p.nx * penetration * sign;
+      c.z -= p.nz * penetration * sign;
+      c.offset = p.offset - penetration * sign;
+      if (c.wallCooldown <= 0 && outward > 2 && v > 7) {
         c.wallCooldown = 0.65;
         if (c.id === 0) {
           this.events.push({ type: 'collision' });

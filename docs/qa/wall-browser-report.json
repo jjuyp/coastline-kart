@@ -1,0 +1,88 @@
+{
+  "pass": true,
+  "checkedAt": "2026-10-16T07:21:33.903Z",
+  "url": "file:///C:/Users/shang/Documents/%E5%89%B5%E6%84%8F%E5%B0%8F%E9%81%8A%E6%88%B2/coastline-kart/Coastline-Kart.html",
+  "checks": [
+    "old mobile build reproduces pinned wall",
+    "desktop countersteers free of left wall",
+    "desktop contact preserves race and penalty",
+    "desktop countersteers free of right wall",
+    "desktop contact preserves race and penalty",
+    "desktop passive recovery has no steering input",
+    "desktop throttle alone unpins square impact",
+    "desktop full three-lap race still finishes",
+    "desktop results restart still clears state",
+    "mobile countersteers free of left wall",
+    "mobile contact preserves race and penalty",
+    "mobile countersteers free of right wall",
+    "mobile contact preserves race and penalty",
+    "mobile passive recovery has no steering input",
+    "touch feedback clears after release",
+    "mobile throttle alone unpins square impact",
+    "mobile full three-lap race still finishes",
+    "mobile results restart still clears state",
+    "no browser errors"
+  ],
+  "measurements": [
+    {
+      "mode": "old mobile automatic throttle",
+      "speed": 0.03789898356105673,
+      "offset": 6.951043592858963
+    },
+    {
+      "mode": "desktop",
+      "side": -1,
+      "speed": 17.246825765798274,
+      "offset": -6.779871786413878,
+      "progress": 15.777588291167007
+    },
+    {
+      "mode": "desktop",
+      "side": 1,
+      "speed": 17.401635827388052,
+      "offset": 6.35953753806245,
+      "progress": 16.319332014065736
+    },
+    {
+      "mode": "desktop passive",
+      "speed": 7.810573327027212,
+      "offset": 8.066600227429857,
+      "progress": 28.72359867984744,
+      "touch": {
+        "left": false,
+        "right": false,
+        "throttle": false,
+        "brake": false,
+        "drift": false
+      }
+    },
+    {
+      "mode": "mobile",
+      "side": -1,
+      "speed": 17.437458814071228,
+      "offset": -6.6689492470603255,
+      "progress": 16.13809586839031
+    },
+    {
+      "mode": "mobile",
+      "side": 1,
+      "speed": 17.423252881110052,
+      "offset": 6.391269718240619,
+      "progress": 16.41727613516443
+    },
+    {
+      "mode": "mobile passive",
+      "speed": 7.838724613670121,
+      "offset": 8.066600227429857,
+      "progress": 28.65824963383534,
+      "touch": {
+        "left": false,
+        "right": false,
+        "throttle": false,
+        "brake": false,
+        "drift": false
+      }
+    }
+  ],
+  "errors": []
+}

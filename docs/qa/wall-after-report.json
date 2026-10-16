@@ -1,0 +1,295 @@
+{
+  "pass": true,
+  "baseline": false,
+  "cases": 32,
+  "results": [
+    {
+      "label": "head-on recovery side=-1 sector=0.08 angle=25",
+      "speed": 28.6481167947948,
+      "forwardMetres": 97.12860933305156,
+      "offset": -1.4397696311706207,
+      "penalty": 0,
+      "gates": 2,
+      "insideBarrier": true
+    },
+    {
+      "label": "head-on recovery side=-1 sector=0.08 angle=60",
+      "speed": 28.970391386262015,
+      "forwardMetres": 82.17506796288588,
+      "offset": -0.8889584864431415,
+      "penalty": 0,
+      "gates": 2,
+      "insideBarrier": true
+    },
+    {
+      "label": "head-on recovery side=-1 sector=0.08 angle=90",
+      "speed": 28.845676030664215,
+      "forwardMetres": 73.32547683859191,
+      "offset": -0.30606524037106714,
+      "penalty": 0,
+      "gates": 2,
+      "insideBarrier": true
+    },
+    {
+      "label": "head-on recovery side=-1 sector=0.31 angle=25",
+      "speed": 21.663122884580503,
+      "forwardMetres": 90.62364171533173,
+      "offset": 0.08049891159138142,
+      "penalty": 0,
+      "gates": 2,
+      "insideBarrier": true
+    },
+    {
+      "label": "head-on recovery side=-1 sector=0.31 angle=60",
+      "speed": 19.271328079964633,
+      "forwardMetres": 80.81646432833347,
+      "offset": 0.598758992756838,
+      "penalty": 0,
+      "gates": 2,
+      "insideBarrier": true
+    },
+    {
+      "label": "head-on recovery side=-1 sector=0.31 angle=90",
+      "speed": 24.074569163927023,
+      "forwardMetres": 74.1136345338492,
+      "offset": 1.2110233486257653,
+      "penalty": 0,
+      "gates": 2,
+      "insideBarrier": true
+    },
+    {
+      "label": "head-on recovery side=-1 sector=0.58 angle=25",
+      "speed": 25.69493782883839,
+      "forwardMetres": 96.57074535763365,
+      "offset": -3.4926732072206685,
+      "penalty": 0,
+      "gates": 2,
+      "insideBarrier": true
+    },
+    {
+      "label": "head-on recovery side=-1 sector=0.58 angle=60",
+      "speed": 27.824098578894674,
+      "forwardMetres": 83.04494255014441,
+      "offset": -4.086069831346495,
+      "penalty": 0,
+      "gates": 2,
+      "insideBarrier": true
+    },
+    {
+      "label": "head-on recovery side=-1 sector=0.58 angle=90",
+      "speed": 30.360564269697765,
+      "forwardMetres": 74.0687577823789,
+      "offset": -3.743158484365887,
+      "penalty": 0,
+      "gates": 2,
+      "insideBarrier": true
+    },
+    {
+      "label": "head-on recovery side=-1 sector=0.8 angle=25",
+      "speed": 30.21006960571246,
+      "forwardMetres": 91.44094295408388,
+      "offset": -1.5683775025609068,
+      "penalty": 0,
+      "gates": 2,
+      "insideBarrier": true
+    },
+    {
+      "label": "head-on recovery side=-1 sector=0.8 angle=60",
+      "speed": 27.991845647740742,
+      "forwardMetres": 75.880689872772,
+      "offset": -0.06264874873219993,
+      "penalty": 0,
+      "gates": 1,
+      "insideBarrier": true
+    },
+    {
+      "label": "head-on recovery side=-1 sector=0.8 angle=90",
+      "speed": 26.06454751389964,
+      "forwardMetres": 67.20749339217741,
+      "offset": 0.31127956869076856,
+      "penalty": 0,
+      "gates": 1,
+      "insideBarrier": true
+    },
+    {
+      "label": "automatic throttle unpins side=-1",
+      "speed": 9.90257031969724,
+      "forwardMetres": 27.44600004379464,
+      "offset": -8.24311919238503,
+      "penalty": 0,
+      "gates": 1,
+      "insideBarrier": true
+    },
+    {
+      "label": "glancing impact preserves slide side=-1",
+      "speed": 16.18061161833792,
+      "forwardMetres": 11.181914039340285,
+      "offset": -8.139579659560614,
+      "penalty": 0,
+      "gates": 0,
+      "insideBarrier": true
+    },
+    {
+      "label": "braking stays still side=-1",
+      "speed": 0,
+      "forwardMetres": 0,
+      "offset": -8.05065264944035,
+      "penalty": 0,
+      "gates": 0,
+      "insideBarrier": true
+    },
+    {
+      "label": "visible shoulder remains driveable side=-1",
+      "speed": 0,
+      "forwardMetres": 0,
+      "offset": -7.799961108868215,
+      "penalty": 0,
+      "gates": 0,
+      "insideBarrier": true
+    },
+    {
+      "label": "head-on recovery side=1 sector=0.08 angle=25",
+      "speed": 28.51748509466673,
+      "forwardMetres": 100.72613184621123,
+      "offset": -0.853206417352073,
+      "penalty": 0,
+      "gates": 2,
+      "insideBarrier": true
+    },
+    {
+      "label": "head-on recovery side=1 sector=0.08 angle=60",
+      "speed": 28.93560307311192,
+      "forwardMetres": 87.99951250898131,
+      "offset": -0.762372491995391,
+      "penalty": 0,
+      "gates": 2,
+      "insideBarrier": true
+    },
+    {
+      "label": "head-on recovery side=1 sector=0.08 angle=90",
+      "speed": 29.04040209697496,
+      "forwardMetres": 79.26890103212746,
+      "offset": -0.9230640624720586,
+      "penalty": 0,
+      "gates": 2,
+      "insideBarrier": true
+    },
+    {
+      "label": "head-on recovery side=1 sector=0.31 angle=25",
+      "speed": 23.24288125766167,
+      "forwardMetres": 94.49079731580221,
+      "offset": 0.20373709903594758,
+      "penalty": 0,
+      "gates": 2,
+      "insideBarrier": true
+    },
+    {
+      "label": "head-on recovery side=1 sector=0.31 angle=60",
+      "speed": 18.812448388930978,
+      "forwardMetres": 84.33634067651533,
+      "offset": 0.7281221379814029,
+      "penalty": 0,
+      "gates": 2,
+      "insideBarrier": true
+    },
+    {
+      "label": "head-on recovery side=1 sector=0.31 angle=90",
+      "speed": 21.30539716780698,
+      "forwardMetres": 78.36266748411893,
+      "offset": 0.7723166380325244,
+      "penalty": 0,
+      "gates": 2,
+      "insideBarrier": true
+    },
+    {
+      "label": "head-on recovery side=1 sector=0.58 angle=25",
+      "speed": 25.37327644695523,
+      "forwardMetres": 95.70123702071913,
+      "offset": -2.8871232597009264,
+      "penalty": 0,
+      "gates": 2,
+      "insideBarrier": true
+    },
+    {
+      "label": "head-on recovery side=1 sector=0.58 angle=60",
+      "speed": 27.669223830383114,
+      "forwardMetres": 83.59608802830508,
+      "offset": -3.4879364395805927,
+      "penalty": 0,
+      "gates": 2,
+      "insideBarrier": true
+    },
+    {
+      "label": "head-on recovery side=1 sector=0.58 angle=90",
+      "speed": 30.239095728591657,
+      "forwardMetres": 74.72609627725672,
+      "offset": -3.8196722110910795,
+      "penalty": 0,
+      "gates": 2,
+      "insideBarrier": true
+    },
+    {
+      "label": "head-on recovery side=1 sector=0.8 angle=25",
+      "speed": 30.81883061064729,
+      "forwardMetres": 96.80964034291014,
+      "offset": -1.1760028973454186,
+      "penalty": 0,
+      "gates": 2,
+      "insideBarrier": true
+    },
+    {
+      "label": "head-on recovery side=1 sector=0.8 angle=60",
+      "speed": 29.614679674384185,
+      "forwardMetres": 86.00147116204084,
+      "offset": -0.6032927326893922,
+      "penalty": 0,
+      "gates": 2,
+      "insideBarrier": true
+    },
+    {
+      "label": "head-on recovery side=1 sector=0.8 angle=90",
+      "speed": 28.314492966963105,
+      "forwardMetres": 77.64767546581743,
+      "offset": -0.6951746910966545,
+      "penalty": 0,
+      "gates": 1,
+      "insideBarrier": true
+    },
+    {
+      "label": "automatic throttle unpins side=1",
+      "speed": 10.36980992095102,
+      "forwardMetres": 35.225580449678205,
+      "offset": 8.123700729819326,
+      "penalty": 0,
+      "gates": 1,
+      "insideBarrier": true
+    },
+    {
+      "label": "glancing impact preserves slide side=1",
+      "speed": 24.272755074561626,
+      "forwardMetres": 15.061099212946402,
+      "offset": 8.477597172707783,
+      "penalty": 0,
+      "gates": 1,
+      "insideBarrier": true
+    },
+    {
+      "label": "braking stays still side=1",
+      "speed": 0,
+      "forwardMetres": -0.06783563130636594,
+      "offset": 8.05065264944035,
+      "penalty": 0,
+      "gates": 0,
+      "insideBarrier": true
+    },
+    {
+      "label": "visible shoulder remains driveable side=1",
+      "speed": 0,
+      "forwardMetres": 0.02467855679829256,
+      "offset": 7.79996096985677,
+      "penalty": 0,
+      "gates": 0,
+      "insideBarrier": true
+    }
+  ]
+}

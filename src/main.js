@@ -904,6 +904,7 @@ window.__COASTLINE = {
         drifting: c.drifting,
         drifts: c.drifts,
         boost: c.boost,
+        wallContact: c.wallContact,
         finished: c.finished,
         finishTime: c.finishTime,
       })),
@@ -942,16 +943,20 @@ window.__COASTLINE = {
       goTime = 0;
     }
   },
-  teleport(s, lane = 0, yawOffset = 0) {
+  teleport(s, lane = 0, yawOffset = 0, speed = 0) {
     if (!query.has('qa')) throw new Error('QA mode required');
     const c = race.cars[0],
       f = track.sampleDistance(s);
     c.x = f.position.x + f.normal.x * lane;
     c.z = f.position.z + f.normal.z * lane;
     c.yaw = f.yaw + yawOffset;
-    c.vx = 0;
-    c.vz = 0;
-    c.speed = 0;
+    c.vx = Math.sin(c.yaw) * speed;
+    c.vz = Math.cos(c.yaw) * speed;
+    c.speed = speed;
+    c.offset = lane;
+    c.angular = 0;
+    c.steer = 0;
+    c.wallContact = 0;
     c.index = Math.floor(((((s / track.length) % 1) + 1) % 1) * track.count);
     c.prevFraction = (((s / track.length) % 1) + 1) % 1;
     c.progress = s;

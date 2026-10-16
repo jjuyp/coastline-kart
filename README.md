@@ -35,6 +35,10 @@ Use a current browser with WebGL and hardware acceleration enabled.
   Steering, braking and drifting support simultaneous fingers.
 - Use **↺ 回正** when stuck (+2 seconds), or **◉ 視角** to change the chase view.
   Upcoming-turn cues, a compact HUD and a wider portrait view improve visibility.
+- Barrier contact now preserves sliding speed. At low speed, turn away while
+  applying throttle; a square hit also receives gentle bumper deflection so
+  automatic throttle can get moving again. This does not teleport the kart or
+  add a recovery penalty. Braking still holds the kart stopped.
 - Opening settings or leaving the tab pauses the race and clears held input.
   Close settings, then explicitly resume. Race buttons return keyboard focus to
   the game so Space continues to drift after a mouse click.
@@ -88,3 +92,7 @@ Set `GAME_URL` to the hosted URL to exercise the same flows after deployment.
 The suite covers preferences, focus, pause/recovery, a complete race, and touch
 interaction at 320×568, 375×667, 390×844 and 844×390. Touch measurements use
 Chromium emulation, not physical iOS/Android hardware.
+
+Version 1.2.1 collision regressions run with `npm run check:wall` (32 scenarios)
+and `node scripts/wall-browser-qa.mjs` (real keyboard and emulated touch input).
+The latter also accepts `GAME_URL` for verification of the published build.
