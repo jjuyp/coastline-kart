@@ -26,8 +26,18 @@ Use a current browser with WebGL and hardware acceleration enabled.
 - Turquoise road pads give a short boost.
 - R: return the kart to the center of its current section (+2 seconds).
 - C: change chase camera. M: mute. Esc / P: pause. Enter: start / restart.
-- On a touch device, throttle is automatic. Use the on-screen steering, brake
-  and drift buttons. Landscape orientation offers a wider view.
+- Open **⚙ 操作與設定** to choose gentle / standard / responsive steering,
+  automatic throttle, button / analog touch steering, camera and quality.
+  Preferences persist across visits. Automatic throttle defaults on for touch
+  devices; switching it off exposes a manual throttle pedal.
+- The analog steering pad starts neutral wherever your thumb lands. Slide left
+  or right to adjust the turn proportionally; releasing centers the steering.
+  Steering, braking and drifting support simultaneous fingers.
+- Use **↺ 回正** when stuck (+2 seconds), or **◉ 視角** to change the chase view.
+  Upcoming-turn cues, a compact HUD and a wider portrait view improve visibility.
+- Opening settings or leaving the tab pauses the race and clears held input.
+  Close settings, then explicitly resume. Race buttons return keyboard focus to
+  the game so Space continues to drift after a mouse click.
 - HQ / ECO changes rendering quality. Slow devices reduce internal rendering
   resolution automatically while retaining crisp UI.
 
@@ -43,7 +53,8 @@ karts plus distant LOD variants. `src/race.js` contains fixed 120 Hz driving,
 collision handling, AI pursuit and race rules. `src/main.js` integrates input,
 camera, pooled VFX, UI and rendering. `src/audio.js` synthesizes original audio.
 `src/steering.js` controls progressive keyboard and touch steering independently
-of the AI drivers.
+of the AI drivers. `src/touch-controls.js` owns simultaneous pointer input and
+the analog pad. `src/controls.css` styles the control sheets and responsive HUD.
 
 For a clean checkout: `npm ci`, then `npm run build`. Run `npm run dev`
 for localhost preview. The build emits `dist/index.html`, `docs/index.html` and
@@ -71,3 +82,9 @@ Chromium installation and Playwright Core; they are workstation-specific tools.
 The checked-in standalone HTML is the directly usable offline delivery. No
 hosted deployment is required. Selected browser verification reports are included
 under `docs/qa/`; additional workstation-only captures remain under `output/`.
+
+Version 1.2 interaction checks are reproducible with `node scripts/ux-qa.mjs`.
+Set `GAME_URL` to the hosted URL to exercise the same flows after deployment.
+The suite covers preferences, focus, pause/recovery, a complete race, and touch
+interaction at 320×568, 375×667, 390×844 and 844×390. Touch measurements use
+Chromium emulation, not physical iOS/Android hardware.

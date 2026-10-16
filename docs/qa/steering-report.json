@@ -4,83 +4,83 @@
     {
       "label": "standard ArrowLeft",
       "direction": "left",
-      "signedHeading": -0.026796805055201045,
+      "signedHeading": -0.027051800418317395,
       "pass": true
     },
     {
       "label": "standard ArrowRight",
       "direction": "right",
-      "signedHeading": 0.026601870797204497,
+      "signedHeading": 0.027114683564200992,
       "pass": true
     },
     {
       "label": "standard KeyA",
       "direction": "left",
-      "signedHeading": -0.027801011719365776,
+      "signedHeading": -0.026269804757857063,
       "pass": true
     },
     {
       "label": "standard KeyD",
       "direction": "right",
-      "signedHeading": 0.027729397609567497,
+      "signedHeading": 0.02808358681950357,
       "pass": true
     },
     {
       "label": "high ArrowLeft",
       "direction": "left",
-      "signedHeading": -0.030999143043135835,
+      "signedHeading": -0.026134421670969854,
       "pass": true
     },
     {
       "label": "high ArrowRight",
       "direction": "right",
-      "signedHeading": 0.027729397609567497,
+      "signedHeading": 0.03464369776946391,
       "pass": true
     },
     {
       "label": "high KeyA",
       "direction": "left",
-      "signedHeading": -0.02765739117356608,
+      "signedHeading": -0.026202297801224683,
       "pass": true
     },
     {
       "label": "high KeyD",
       "direction": "right",
-      "signedHeading": 0.02613442167096991,
+      "signedHeading": 0.026470130327606978,
       "pass": true
     },
     {
       "label": "drift ArrowLeft",
       "direction": "left",
-      "signedHeading": -0.3712022852166282,
+      "signedHeading": -0.36098082582899094,
       "pass": true
     },
     {
       "label": "drift boost left",
       "pass": true,
-      "boost": 1.125
+      "boost": 1.1333333333333333
     },
     {
       "label": "drift ArrowRight",
       "direction": "right",
-      "signedHeading": 0.36098082582899094,
+      "signedHeading": 0.36874769956625647,
       "pass": true
     },
     {
       "label": "drift boost right",
       "pass": true,
-      "boost": 1.0666666666666669
+      "boost": 1.1333333333333333
     },
     {
       "label": "touch left",
       "direction": "left",
-      "signedHeading": -0.027423995652620325,
+      "signedHeading": -0.029281379875907176,
       "pass": true
     },
     {
       "label": "touch right",
       "direction": "right",
-      "signedHeading": 0.02698857282638989,
+      "signedHeading": 0.02705180041831745,
       "pass": true
     }
   ],

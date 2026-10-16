@@ -5,13 +5,12 @@ import { createWorld } from './world.js';
 import { createKart } from './kart.js';
 import { RaceAudio } from './audio.js';
 import { ProgressiveSteering } from './steering.js';
+import { createTouchControls } from './touch-controls.js';
 
 const $ = (id) => document.getElementById(id),
   query = new URLSearchParams(location.search);
-const mobile = matchMedia('(pointer:coarse)').matches || innerWidth < 760;
-if (mobile)
-  document.querySelector('.menu-controls').innerHTML =
-    '<span>自動油門 · 左右觸控轉向 · 按住煞車減速</span><span>長按甩尾，放開即可加速</span>';
+const mobile = matchMedia('(pointer:coarse)').matches;
+document.body.classList.toggle('touch-device', mobile);
 const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const storage = {
   get(key, fallback) {
@@ -220,10 +219,16 @@ function updateParticles(dt) {
   if (particleMesh.instanceColor) particleMesh.instanceColor.needsUpdate = true;
 }
 
-const keys = new Set(),
-  touch = { left: false, right: false, brake: false, drift: false };
+const keys = new Set();
 const steering = new ProgressiveSteering();
-let cameraMode = 0,
+const preferences = {
+  sensitivity: [0.8, 1, 1.15].includes(storage.get('sensitivity', 1))
+    ? storage.get('sensitivity', 1)
+    : 1,
+  autoThrottle: storage.get('auto-throttle', mobile) === true,
+  touchMode: storage.get('touch-mode', 'buttons') === 'pad' ? 'pad' : 'buttons',
+};
+let cameraMode = storage.get('camera', 0) === 1 ? 1 : 0,
   lowQuality = storage.get('low-quality', mobile),
   muted = storage.get('muted', false),
   screen = 'menu',
@@ -231,6 +236,21 @@ let cameraMode = 0,
   goTime = 0,
   wrongTime = 0,
   autoQA = false;
+const touchControls = createTouchControls(
+  document.querySelector('.touch-controls'),
+  () => screen === 'race',
+  () => audio.init(),
+);
+const touch = touchControls.buttons;
+const driftButton = document.querySelector('[data-control="drift"]');
+function focusDriving() {
+  if (screen === 'race') $('game').focus({ preventScroll: true });
+}
+function resetInput() {
+  keys.clear();
+  steering.reset();
+  touchControls.reset();
+}
 let uiTick = 0,
   gameTime = 0,
   lastFrame = performance.now(),
@@ -290,6 +310,7 @@ function setScreen(next) {
   $('pause-screen').classList.toggle('hidden', next !== 'paused');
   document.body.classList.toggle('playing', next !== 'menu');
   document.body.classList.toggle('race-results', next === 'results');
+  document.body.dataset.screen = next;
 }
 function startRace() {
   audio.init();
@@ -297,31 +318,33 @@ function startRace() {
   autoQA = false;
   clearEffects();
   setScreen('race');
-  keys.clear();
-  steering.reset();
-  for (const k in touch) touch[k] = false;
+  resetInput();
   goTime = 0;
   wrongTime = 0;
   $('wrong-way').classList.add('hidden');
   $('countdown').classList.remove('hidden');
   $('countdown').querySelector('strong').textContent = '3';
   $('countdown').querySelector('span').textContent = '深呼吸，準備出發。';
-  $('countdown').querySelector('small').textContent = mobile
-    ? '自動油門 · 左右按鈕轉向'
+  $('countdown').querySelector('small').textContent = preferences.autoThrottle
+    ? '自動油門已開啟 · 輕轉方向，入彎煞車'
     : '綠燈亮起，踩下 W 或 ↑ 油門';
+  updateHUD();
+  focusDriving();
   cameraSnap();
 }
 function pauseRace() {
   if (race.pause()) {
     setScreen('paused');
-    keys.clear();
-    steering.reset();
-    for (const k in touch) touch[k] = false;
+    resetInput();
+    $('resume').focus({ preventScroll: true });
   }
 }
 function resumeRace() {
+  if (race.state !== 'paused') return;
   race.resume();
+  audio.init();
   setScreen('race');
+  focusDriving();
   accumulator = 0;
   lastFrame = performance.now();
 }
@@ -331,8 +354,8 @@ function returnMenu() {
   setScreen('menu');
   $('countdown').classList.add('hidden');
   $('wrong-way').classList.add('hidden');
-  keys.clear();
-  steering.reset();
+  resetInput();
+  $('start').focus({ preventScroll: true });
 }
 function toggleMute() {
   audio.init();
@@ -340,6 +363,7 @@ function toggleMute() {
   audio.setMuted(muted);
   storage.set('muted', muted);
   updateSoundButton();
+  focusDriving();
 }
 $('start').onclick = startRace;
 $('restart').onclick = startRace;
@@ -348,15 +372,99 @@ $('resume').onclick = resumeRace;
 $('back-menu').onclick = returnMenu;
 $('results-menu').onclick = returnMenu;
 $('pause').onclick = pauseRace;
+function changeCamera() {
+  cameraMode = 1 - cameraMode;
+  storage.set('camera', cameraMode);
+  $('camera-setting').value = String(cameraMode);
+  toast(cameraMode ? '高位追逐視角' : '標準追逐視角', 1);
+  focusDriving();
+}
+function rescue() {
+  if (race.state !== 'racing') return;
+  race.rescue();
+  resetInput();
+  cameraSnap();
+  focusDriving();
+}
+$('camera-toggle').onclick = changeCamera;
+$('rescue').onclick = rescue;
+
+function syncPreferences() {
+  $('sensitivity').value = String(preferences.sensitivity);
+  $('auto-throttle').checked = preferences.autoThrottle;
+  $('auto-toggle').setAttribute('aria-pressed', String(preferences.autoThrottle));
+  $('auto-toggle').textContent = `自動油門：${preferences.autoThrottle ? '開' : '關'}`;
+  $('touch-mode').value = preferences.touchMode;
+  $('camera-setting').value = String(cameraMode);
+  $('quality-setting').value = lowQuality ? 'eco' : 'hq';
+  document.body.dataset.touchMode = preferences.touchMode;
+  document.body.classList.toggle('manual-throttle', !preferences.autoThrottle);
+  if (mobile) {
+    document.querySelector('.menu-controls').innerHTML =
+      `<span>${preferences.autoThrottle ? '自動油門' : '按住油門'} · ${preferences.touchMode === 'pad' ? '按住後左右滑動轉向' : '短按微調，長按轉彎'}</span><span>按住甩尾，蓄能後放開加速</span>`;
+    $('pause-controls').textContent =
+      '左右轉向 · 按住煞車減速 · 甩尾後放開加速。卡住時使用「回正」（+2 秒）。';
+  }
+}
+function setAutoThrottle(value) {
+  preferences.autoThrottle = value;
+  storage.set('auto-throttle', value);
+  syncPreferences();
+}
+$('auto-toggle').onclick = () => {
+  setAutoThrottle(!preferences.autoThrottle);
+  toast(preferences.autoThrottle ? '自動油門已開啟 · 按住煞車減速' : '自動油門已關閉 · W / ↑ 加速');
+  focusDriving();
+};
+$('auto-throttle').onchange = (event) => setAutoThrottle(event.target.checked);
+$('sensitivity').onchange = (event) => {
+  preferences.sensitivity = Number(event.target.value);
+  storage.set('sensitivity', preferences.sensitivity);
+  resetInput();
+};
+$('touch-mode').onchange = (event) => {
+  preferences.touchMode = event.target.value;
+  storage.set('touch-mode', preferences.touchMode);
+  resetInput();
+  syncPreferences();
+};
+$('camera-setting').onchange = (event) => {
+  cameraMode = Number(event.target.value);
+  storage.set('camera', cameraMode);
+  cameraSnap();
+};
+$('quality-setting').onchange = (event) => {
+  lowQuality = event.target.value === 'eco';
+  applyQuality();
+};
+function openDialog(id) {
+  if (screen === 'race') pauseRace();
+  resetInput();
+  syncPreferences();
+  $(id).showModal();
+}
+for (const id of ['settings', 'menu-settings', 'pause-settings']) {
+  $(id).onclick = () => openDialog('settings-dialog');
+}
+$('help').onclick = () => openDialog('help-dialog');
+for (const dialog of document.querySelectorAll('dialog')) {
+  dialog.querySelectorAll('[data-close]').forEach((button) => {
+    button.onclick = () => dialog.close();
+  });
+}
+syncPreferences();
 $('mute').onclick = toggleMute;
 $('quality').onclick = () => {
   lowQuality = !lowQuality;
   applyQuality();
+  syncPreferences();
   toast(lowQuality ? 'ECO · 省電畫質' : 'HQ · 高畫質');
+  focusDriving();
 };
 $('fullscreen').onclick = () => {
   if (document.fullscreenElement) document.exitFullscreen?.();
   else document.documentElement.requestFullscreen?.().catch(() => toast('此瀏覽器不支援全螢幕'));
+  focusDriving();
 };
 document.querySelector('.brand').onclick = (e) => {
   e.preventDefault();
@@ -365,10 +473,13 @@ document.querySelector('.brand').onclick = (e) => {
   else if (screen === 'results') returnMenu();
 };
 window.addEventListener('keydown', (e) => {
+  const target = e.target instanceof Element ? e.target : null;
+  if (document.querySelector('dialog[open]') || target?.closest('input, select, textarea')) return;
+  if ((e.code === 'Enter' || e.code === 'Space') && target?.closest('button, a')) return;
   if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Space'].includes(e.code))
     e.preventDefault();
   if (e.repeat) {
-    keys.add(e.code);
+    if (screen === 'race') keys.add(e.code);
     return;
   }
   if (e.code === 'Escape' || e.code === 'KeyP') {
@@ -379,39 +490,20 @@ window.addEventListener('keydown', (e) => {
     if (screen === 'menu' || screen === 'results') startRace();
     else if (screen === 'paused') resumeRace();
   } else if (e.code === 'KeyR' && screen === 'race') {
-    race.rescue();
-    steering.reset();
+    rescue();
   } else if (e.code === 'KeyC') {
-    cameraMode = 1 - cameraMode;
-    toast(cameraMode ? '高位追逐視角' : '標準追逐視角', 1);
+    changeCamera();
   }
-  keys.add(e.code);
+  if (screen === 'race') keys.add(e.code);
 });
 window.addEventListener('keyup', (e) => keys.delete(e.code));
 window.addEventListener('blur', () => {
-  keys.clear();
+  resetInput();
   if (screen === 'race') pauseRace();
 });
 document.addEventListener('visibilitychange', () => {
   if (document.hidden && screen === 'race') pauseRace();
 });
-for (const btn of document.querySelectorAll('[data-control]')) {
-  const key = btn.dataset.control;
-  btn.addEventListener('pointerdown', (e) => {
-    e.preventDefault();
-    btn.setPointerCapture(e.pointerId);
-    touch[key] = true;
-    btn.classList.add('pressed');
-    audio.init();
-  });
-  const release = () => {
-    touch[key] = false;
-    btn.classList.remove('pressed');
-  };
-  btn.addEventListener('pointerup', release);
-  btn.addEventListener('pointercancel', release);
-  btn.addEventListener('lostpointercapture', release);
-}
 // The kart faces local +Z: positive yaw turns toward the driver's left.
 function input(dt) {
   if (autoQA) return race.aiInput(race.cars[0]);
@@ -419,10 +511,21 @@ function input(dt) {
     (touch.left || keys.has('KeyA') || keys.has('ArrowLeft') ? 1 : 0) -
     (touch.right || keys.has('KeyD') || keys.has('ArrowRight') ? 1 : 0);
   if (race.state !== 'racing') steering.reset();
+  const brake = touch.brake || keys.has('KeyS') || keys.has('ArrowDown');
+  const steer =
+    race.state !== 'racing'
+      ? 0
+      : touchControls.dragging && direction === 0
+        ? steering.updateAnalog(dt, touchControls.axis, race.cars[0].speed, preferences.sensitivity)
+        : steering.update(dt, direction, race.cars[0].speed, preferences.sensitivity);
   return {
-    throttle: mobile ? (touch.brake ? 0 : 1) : keys.has('KeyW') || keys.has('ArrowUp') ? 1 : 0,
-    brake: touch.brake || keys.has('KeyS') || keys.has('ArrowDown') ? 1 : 0,
-    steer: race.state === 'racing' ? steering.update(dt, direction, race.cars[0].speed) : 0,
+    throttle:
+      !brake &&
+      (preferences.autoThrottle || touch.throttle || keys.has('KeyW') || keys.has('ArrowUp'))
+        ? 1
+        : 0,
+    brake: brake ? 1 : 0,
+    steer,
     drift: touch.drift || keys.has('Space'),
   };
 }
@@ -481,6 +584,23 @@ function updateHUD() {
   const c = race.cars[0],
     order = race.order(),
     place = order.findIndex((o) => o.id === 0) + 1;
+  // Include the current bend so a straight after it does not hide the turn cue.
+  let curve = 0;
+  const lookStep = Math.round(8 + c.speed * 0.15);
+  for (let i = 0; i < 5; i++) {
+    const sample = track.samples[(c.index + i * lookStep) % track.count];
+    if (Math.abs(sample.curvature) > Math.abs(curve)) curve = sample.curvature;
+  }
+  $('corner-arrow').textContent = Math.abs(curve) < 0.008 ? '↑' : curve > 0 ? '↰' : '↱';
+  $('corner-text').textContent =
+    c.boost > 0
+      ? '加速中'
+      : Math.abs(curve) < 0.008
+        ? '前方直線'
+        : Math.abs(curve) > 0.022
+          ? '急彎 · 收油煞車'
+          : '前方彎道';
+  $('corner-hint').classList.toggle('sharp', Math.abs(curve) > 0.022);
   $('position').textContent = place;
   $('lap').textContent = c.lap;
   $('timer').textContent = formatTime(race.elapsed + race.penalty);
@@ -488,6 +608,7 @@ function updateHUD() {
   $('speed-fill').style.width = `${Math.min(100, (c.speed / 43) * 100)}%`;
   $('drift-fill').style.width = `${(c.driftCharge / 2.8) * 100}%`;
   $('drift-fill').style.background = c.driftCharge > 1.5 ? '#ffb754' : '#75eff4';
+  driftButton.classList.toggle('charged', c.driftCharge > 0.55);
   $('drift-label').textContent =
     c.boost > 0
       ? 'BOOST ↗ 加速中'
@@ -514,6 +635,7 @@ function updateHUD() {
 }
 function showResults() {
   setScreen('results');
+  resetInput();
   $('countdown').classList.add('hidden');
   $('wrong-way').classList.add('hidden');
   const c = race.cars[0],
@@ -537,6 +659,7 @@ function showResults() {
   } else $('new-record').textContent = 'THE GOOD TIMES ARE MEASURED IN LAPS.';
   for (let i = 0; i < 80; i++) emit(c, 'confetti');
   soundCue('finish');
+  $('restart').focus({ preventScroll: true });
 }
 function updateResultsList() {
   const order = race.order(),
@@ -571,14 +694,22 @@ function cameraTarget(time) {
   } else {
     const velAngle = c.speed > 5 ? Math.atan2(c.vx, c.vz) : c.yaw;
     const angle = c.yaw + wrapAngle(velAngle - c.yaw) * 0.32;
+    const portrait = mobile && innerHeight > innerWidth;
     const dist =
-      (mobile ? 10.8 : 10.2) + (cameraMode ? 4 : 0) + (c.boost > 0 && !reducedMotion ? 1.2 : 0);
+      (portrait ? 12.8 : mobile ? 11.5 : 10.2) +
+      (cameraMode ? 4 : 0) +
+      (c.boost > 0 && !reducedMotion ? 1.2 : 0);
     desiredPosition.set(
       c.x - Math.sin(angle) * dist,
-      c.y + (cameraMode ? 7.8 : mobile ? 5.6 : 4.5),
+      c.y + (cameraMode ? 8.5 : portrait ? 7.5 : mobile ? 5.8 : 4.5),
       c.z - Math.cos(angle) * dist,
     );
-    desiredLook.set(c.x + Math.sin(angle) * 5, c.y + 1.1, c.z + Math.cos(angle) * 5);
+    const lookAhead = portrait ? 3.8 : 5;
+    desiredLook.set(
+      c.x + Math.sin(angle) * lookAhead,
+      c.y + 1.1,
+      c.z + Math.cos(angle) * lookAhead,
+    );
   }
 }
 function cameraSnap() {
@@ -671,7 +802,8 @@ function renderFrame(now) {
   camLook.lerp(desiredLook, 1 - Math.exp(-dt * 10));
   camera.position.copy(camPosition);
   camera.lookAt(camLook);
-  const desiredFov = c.boost > 0 && screen === 'race' && !reducedMotion ? 61 : 53;
+  const baseFov = mobile && innerHeight > innerWidth ? 59 : 53;
+  const desiredFov = c.boost > 0 && screen === 'race' && !reducedMotion ? baseFov + 8 : baseFov;
   camera.fov += (desiredFov - camera.fov) * (1 - Math.exp(-dt * 4));
   camera.updateProjectionMatrix();
   $('boost-lines').style.opacity = c.boost > 0 && screen === 'race' && !reducedMotion ? '1' : '0';
@@ -789,6 +921,7 @@ window.__COASTLINE = {
       frameMs: frameTimes.reduce((a, b) => a + b, 0) / Math.max(1, frameTimes.length),
       renderer: renderer.getContext().getParameter(renderer.getContext().RENDERER),
       steering: { heldSeconds: steering.heldSeconds, command: steering.value },
+      controls: { ...preferences, touchAxis: touchControls.axis, touch: { ...touch }, cameraMode },
     };
   },
   start: startRace,

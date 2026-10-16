@@ -5,89 +5,89 @@
       "version": "before",
       "control": "ArrowLeft",
       "seconds": 0.1,
-      "degrees": 0.6725633525801512
+      "degrees": 0.6681134496056049
     },
     {
       "version": "before",
       "control": "ArrowLeft",
       "seconds": 0.3,
-      "degrees": 7.802402829487393
+      "degrees": 7.422134639784031
     },
     {
       "version": "before",
       "control": "ArrowLeft",
       "seconds": 0.6,
-      "degrees": 24.27413418192755
+      "degrees": 24.874677222713355
     },
     {
       "version": "before",
       "control": "ArrowLeft",
       "seconds": 1,
-      "degrees": 52.744395267487626
+      "degrees": 51.515353745602546
     },
     {
       "version": "before",
       "control": "ArrowRight",
       "seconds": 0.1,
-      "degrees": 0.6453895270679567
+      "degrees": 0.9253906881726304
     },
     {
       "version": "before",
       "control": "ArrowRight",
       "seconds": 0.3,
-      "degrees": 7.23404477777291
+      "degrees": 7.257842220245291
     },
     {
       "version": "before",
       "control": "ArrowRight",
       "seconds": 0.6,
-      "degrees": 24.802148646804504
+      "degrees": 24.345354011173992
     },
     {
       "version": "before",
       "control": "ArrowRight",
       "seconds": 1,
-      "degrees": 51.415542837895146
+      "degrees": 51.23422452350199
     },
     {
       "version": "after",
       "control": "ArrowLeft",
       "seconds": 0.1,
-      "degrees": 0.06237930351551265,
-      "steer": 0.072405869245733,
-      "command": 0.151457544190802
+      "degrees": 0.049032193929346116,
+      "steer": 0.06628223725242306,
+      "command": 0.1466216020966851
     },
     {
       "version": "after",
       "control": "ArrowLeft",
       "seconds": 0.3,
-      "degrees": 1.0118192329013123,
-      "steer": 0.20392732844047273,
-      "command": 0.2757048545178466
+      "degrees": 1.5848538811152024,
+      "steer": 0.2433891651560084,
+      "command": 0.31585000027965937
     },
     {
       "version": "after",
       "control": "ArrowLeft",
       "seconds": 0.6,
-      "degrees": 5.650025660687695,
-      "steer": 0.4110684921667421,
-      "command": 0.48704028075893596
+      "degrees": 6.023970629027873,
+      "steer": 0.4231853331241455,
+      "command": 0.49940654279617597
     },
     {
       "version": "after",
       "control": "ArrowLeft",
       "seconds": 1,
-      "degrees": 19.8597367439288,
-      "steer": 0.6940530097904826,
-      "command": 0.7384118126613759
+      "degrees": 20.011108289099983,
+      "steer": 0.7002041549986533,
+      "command": 0.7411438673747557
     },
     {
       "version": "after",
       "control": "ArrowRight",
       "seconds": 0.1,
-      "degrees": 0.048257509020806166,
-      "steer": -0.06644865646397534,
-      "command": -0.14706845981703492
+      "degrees": 0.04794279743722084,
+      "steer": -0.06651532519719631,
+      "command": -0.1472474742343639
     },
     {
       "version": "after",
@@ -101,17 +101,17 @@
       "version": "after",
       "control": "ArrowRight",
       "seconds": 0.6,
-      "degrees": 6.023970629027873,
-      "steer": -0.4231853331241455,
-      "command": -0.49940654279617597
+      "degrees": 5.650025660687695,
+      "steer": -0.4110684921667421,
+      "command": -0.48704028075893596
     },
     {
       "version": "after",
       "control": "ArrowRight",
       "seconds": 1,
-      "degrees": 19.27349309349194,
-      "steer": -0.6931253834587847,
-      "command": -0.7415037547314937
+      "degrees": 20.04595635497806,
+      "steer": -0.6997785881890929,
+      "command": -0.7406958087311871
     },
     {
       "version": "after",
@@ -119,13 +119,13 @@
       "samples": [
         {
           "seconds": 0.1,
-          "degrees": 0.0649696461360707,
-          "steer": 0.0718824891014977
+          "degrees": 0.05154228302818485,
+          "steer": 0.06571910203544613
         },
         {
           "seconds": 0.7,
-          "degrees": 8.411710139783219,
-          "steer": 0.4788162949381643
+          "degrees": 8.427582658131103,
+          "steer": 0.4785223041441634
         }
       ]
     },
@@ -140,8 +140,8 @@
         },
         {
           "seconds": 0.7,
-          "degrees": 8.410728720747954,
-          "steer": -0.4789913605457264
+          "degrees": 8.652270479235233,
+          "steer": -0.485005521357244
         }
       ]
     }

@@ -1,0 +1,622 @@
+/* Driving controls and readable race information. */
+.quiet-button {
+  min-height: 44px;
+  padding: 8px 14px;
+  border: 1px solid #fff1d944;
+  border-radius: 12px;
+  background: #123e46d9;
+  color: #fff5e4;
+  font-size: 12px;
+  line-height: 1.4;
+}
+.quiet-button:hover {
+  background: #225b60;
+}
+.quiet-button[aria-pressed='true'] {
+  border-color: #9bebd4;
+  color: #b5ffe4;
+}
+.menu-links {
+  display: flex;
+  gap: 10px;
+  margin-top: 16px;
+}
+.menu-links .quiet-button {
+  background: #17444988;
+  font-size: 11px;
+}
+.icon-btn {
+  width: 44px;
+  height: 44px;
+  background: #123e46c9;
+}
+.race-top {
+  gap: 12px;
+  pointer-events: none;
+}
+.race-top > div {
+  padding: 12px 18px;
+  border: 1px solid #fff1d92b;
+  border-radius: 14px;
+  background: #123e46df;
+  box-shadow: 0 4px 24px #102e3a1c;
+  text-shadow: none;
+}
+.position > strong {
+  font-size: 56px;
+}
+.position small {
+  margin-top: 5px;
+}
+.lap {
+  border-left: 0;
+}
+.timer > b {
+  font-size: 21px;
+}
+.race-utilities {
+  position: absolute;
+  top: 207px;
+  right: 38px;
+  display: flex;
+  gap: 8px;
+}
+.race-utilities small {
+  opacity: 0.65;
+  font-size: 9px;
+}
+.corner-hint {
+  position: absolute;
+  top: 207px;
+  left: 225px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #123e46dd;
+  border: 1px solid #fff1d92b;
+  border-radius: 13px;
+  padding: 8px 14px;
+  pointer-events: none;
+}
+.corner-hint b {
+  font-size: 28px;
+  color: #a3f1df;
+  line-height: 1;
+}
+.corner-hint span {
+  font-size: 11px;
+}
+.corner-hint.sharp b {
+  color: #ffbe79;
+}
+.leader-row {
+  background: #123e46c9;
+}
+.leader-row > span:last-child {
+  opacity: 0.9;
+}
+.speed-wrap {
+  background: linear-gradient(120deg, #123e46a6, #123e46e0);
+  padding: 12px 16px;
+  border-radius: 16px;
+  width: 222px;
+  border: 1px solid #fff1d926;
+}
+.speed-wrap > #drift-label {
+  letter-spacing: 0.6px;
+  min-height: 12px;
+}
+.race-help {
+  align-items: center;
+  bottom: 14px;
+}
+.race-help .quiet-button {
+  min-height: 36px;
+  font-size: 10px;
+  padding: 5px 10px;
+}
+body[data-screen='paused'] .touch-controls,
+body.race-results .touch-controls {
+  pointer-events: none;
+}
+.steering-pad,
+.throttle-touch {
+  display: none;
+}
+
+/* Native dialogs provide keyboard focus containment and Escape handling. */
+.control-dialog {
+  width: min(520px, calc(100vw - 32px));
+  max-height: calc(100dvh - 32px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 26px;
+  border: 1px solid #fff6e1;
+  border-radius: 22px;
+  background: #fff5e4;
+  color: #18484b;
+  box-shadow: 0 24px 90px #092b3b66;
+}
+.control-dialog::backdrop {
+  background: #0b303bc2;
+  backdrop-filter: blur(7px);
+}
+.dialog-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.dialog-header .micro {
+  color: #ad5035;
+  font-size: 9px;
+}
+.dialog-header h2 {
+  margin: 8px 0 0;
+  font-size: 26px;
+  letter-spacing: -0.7px;
+}
+.dialog-close {
+  width: 44px;
+  height: 44px;
+  flex: 0 0 44px;
+  border-radius: 50%;
+  border: 1px solid #18484b33;
+  background: transparent;
+  color: #18484b;
+  font-size: 25px;
+}
+.dialog-intro {
+  font-size: 12px;
+  color: #537270;
+  line-height: 1.7;
+  margin: 16px 0 10px;
+}
+.setting-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px 0;
+  border-top: 1px solid #18484b20;
+}
+.setting-row b {
+  display: block;
+  font-size: 14px;
+}
+.setting-row small {
+  display: block;
+  font-size: 11px;
+  line-height: 1.5;
+  margin-top: 5px;
+  color: #537270;
+}
+.setting-row select {
+  width: 122px;
+  min-height: 44px;
+  flex-shrink: 0;
+  border: 1px solid #18484b44;
+  border-radius: 10px;
+  padding: 8px;
+  color: #18484b;
+  background: #fffaf1;
+  font: inherit;
+  font-size: 13px;
+}
+.setting-row input {
+  width: 24px;
+  height: 24px;
+  accent-color: #23766d;
+  margin: 10px 15px;
+}
+.control-dialog :focus-visible {
+  outline: 3px solid #27877b;
+  outline-offset: 3px;
+}
+.dialog-done {
+  width: 100%;
+  margin-top: 10px;
+  border-radius: 12px;
+}
+.driving-guide {
+  margin: 22px 0 12px;
+  list-style: none;
+  padding: 0;
+}
+.driving-guide li {
+  display: flex;
+  gap: 15px;
+  margin: 20px 0;
+}
+.driving-guide li > span {
+  color: #cd674a;
+  font-weight: 800;
+  font-size: 22px;
+}
+.driving-guide h3 {
+  margin: 0 0 7px;
+  font-size: 15px;
+}
+.driving-guide p,
+.guide-note {
+  font-size: 12px;
+  line-height: 1.85;
+  margin: 0;
+  color: #537270;
+}
+.guide-note {
+  padding: 14px;
+  background: #18484b09;
+  border-radius: 12px;
+  margin-bottom: 12px;
+}
+.modal-card,
+.results-card {
+  border-radius: 20px;
+  max-height: calc(100dvh - 32px);
+  overflow-y: auto;
+}
+.modal-card .secondary {
+  min-height: 44px;
+  border-radius: 10px;
+}
+.modal-card > .primary {
+  border-radius: 10px;
+}
+
+@media (max-width: 760px), (pointer: coarse) {
+  #header {
+    inset: max(14px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right)) auto
+      max(16px, env(safe-area-inset-left));
+  }
+  .brand {
+    font-size: 11px;
+  }
+  .brand svg {
+    width: 28px;
+  }
+  .brand-sub {
+    font-size: 6px;
+  }
+  .top-actions {
+    gap: 6px;
+  }
+  .icon-btn {
+    width: 42px;
+    height: 42px;
+  }
+  #quality,
+  #fullscreen,
+  .live-weather {
+    display: none;
+  }
+  .menu-links {
+    gap: 8px;
+    margin-top: 12px;
+  }
+  .menu-links .quiet-button {
+    font-size: 12px;
+    padding: 7px 10px;
+  }
+  .race-top {
+    top: calc(max(14px, env(safe-area-inset-top)) + 54px);
+    left: 14px;
+    right: 14px;
+    gap: 6px;
+  }
+  .race-top > div {
+    padding: 10px;
+    border-radius: 12px;
+  }
+  .position {
+    gap: 7px;
+  }
+  .position > strong {
+    font-size: 39px;
+    letter-spacing: -2px;
+  }
+  .position > span > b {
+    font-size: 12px;
+  }
+  .position small {
+    font-size: 6px;
+    margin-top: 3px;
+  }
+  .lap {
+    gap: 3px;
+  }
+  .lap > b {
+    font-size: 20px;
+  }
+  .lap > span:last-child,
+  .timer small {
+    display: none;
+  }
+  .timer {
+    flex: 1;
+    max-width: 160px;
+    gap: 5px;
+  }
+  .timer > b {
+    font-size: 14px;
+    letter-spacing: 0;
+  }
+  #leaderboard {
+    display: none;
+  }
+  .race-utilities {
+    top: calc(max(14px, env(safe-area-inset-top)) + 124px);
+    right: 14px;
+    gap: 6px;
+  }
+  .race-utilities .quiet-button {
+    min-height: 40px;
+    font-size: 11px;
+    padding: 7px 10px;
+  }
+  .corner-hint {
+    left: 14px;
+    top: calc(max(14px, env(safe-area-inset-top)) + 124px);
+    padding: 9px 10px;
+    gap: 6px;
+  }
+  .corner-hint b {
+    font-size: 22px;
+  }
+  .corner-hint span {
+    font-size: 10px;
+  }
+  .speed-wrap {
+    right: 14px;
+    bottom: calc(max(18px, env(safe-area-inset-bottom)) + 98px);
+    width: 145px;
+    padding: 10px 12px;
+  }
+  .speed-readout > strong {
+    font-size: 43px;
+  }
+  .speed-wrap > #drift-label {
+    font-size: 9px;
+    letter-spacing: 0;
+    margin-top: 7px;
+  }
+  .map-wrap {
+    left: 12px;
+    width: 98px;
+    bottom: calc(max(18px, env(safe-area-inset-bottom)) + 107px);
+  }
+  .map-wrap canvas {
+    width: 98px;
+    height: 85px;
+  }
+  .race-help {
+    display: none;
+  }
+  .touch-controls {
+    display: none;
+  }
+  .touch-device .touch-controls {
+    display: flex;
+    position: absolute;
+    left: max(14px, env(safe-area-inset-left));
+    right: max(14px, env(safe-area-inset-right));
+    bottom: max(18px, env(safe-area-inset-bottom));
+    justify-content: space-between;
+    gap: 8px;
+    align-items: end;
+  }
+  .touch-controls > div {
+    display: flex;
+    gap: 8px;
+  }
+  .touch-controls button {
+    width: 66px;
+    height: 78px;
+    border-radius: 18px;
+    background: #123e46e6;
+    border: 1px solid #fff0d966;
+    font-size: 34px;
+    color: #fff3df;
+    touch-action: none;
+    user-select: none;
+    -webkit-user-select: none;
+    box-shadow: 0 5px 18px #082d3922;
+  }
+  .touch-controls button small {
+    display: block;
+    font-size: 9px;
+    white-space: nowrap;
+    line-height: 1;
+    margin-top: 2px;
+    font-weight: 600;
+  }
+  .touch-controls .drift-touch {
+    width: 72px;
+    background: #ff9569;
+    color: #173e43;
+    font-size: 15px;
+    font-weight: 800;
+  }
+  .touch-controls .brake-touch,
+  .touch-controls .throttle-touch {
+    width: 59px;
+    font-size: 13px;
+  }
+  .touch-controls button.pressed {
+    background: #a6ead5;
+    color: #123e46;
+    transform: scale(0.96);
+  }
+  .touch-controls .drift-touch.charged {
+    background: #ffd075;
+    box-shadow: 0 0 0 3px #ffd07555;
+  }
+  .touch-controls .steering-pad {
+    display: none;
+  }
+  [data-touch-mode='pad'] .steering-buttons {
+    display: none;
+  }
+  [data-touch-mode='pad'] .steering-pad {
+    display: flex;
+  }
+  .steering-pad {
+    position: relative;
+    width: clamp(130px, 43vw, 180px);
+    height: 78px;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 12px 0;
+    border-radius: 18px;
+    border: 1px solid #fff0d966;
+    background: #123e46e6;
+    color: #fff3df;
+    touch-action: none;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+  .steering-pad > span {
+    position: absolute;
+    inset: 10px 0 auto;
+    text-align: center;
+    font-size: 9px;
+    opacity: 0.85;
+  }
+  .steering-pad > i {
+    font-style: normal;
+    font-size: 25px;
+    opacity: 0.65;
+  }
+  .steering-pad > b {
+    position: absolute;
+    left: calc(50% - 21px);
+    top: 28px;
+    width: 42px;
+    height: 42px;
+    display: grid;
+    place-items: center;
+    background: #fff2d9;
+    color: #18484b;
+    font-size: 31px;
+    border-radius: 50%;
+    transform: translateX(var(--steer-x, 0px));
+  }
+  .steering-pad.pressed {
+    border-color: #b1ffdf;
+  }
+  .touch-device.manual-throttle .throttle-touch {
+    display: block;
+    background: #377a6b;
+  }
+  .manual-throttle .touch-controls {
+    gap: 6px;
+  }
+  .manual-throttle .touch-controls > div {
+    gap: 5px;
+  }
+  .manual-throttle .touch-controls button {
+    width: 51px;
+  }
+  .manual-throttle .steering-pad {
+    width: clamp(120px, 40vw, 176px);
+  }
+  .control-dialog {
+    padding: 20px;
+  }
+  .dialog-header h2 {
+    font-size: 23px;
+  }
+  .setting-row {
+    gap: 10px;
+    padding: 13px 0;
+  }
+  .setting-row b {
+    font-size: 13px;
+  }
+  .setting-row small {
+    font-size: 10px;
+  }
+  .setting-row select {
+    width: 112px;
+    font-size: 12px;
+  }
+}
+@media (max-width: 350px) {
+  .touch-controls button {
+    width: 56px;
+  }
+  .touch-controls .drift-touch {
+    width: 63px;
+  }
+  .touch-controls .brake-touch {
+    width: 52px;
+  }
+  .corner-hint span {
+    font-size: 9px;
+  }
+  .race-utilities .quiet-button {
+    padding: 7px 8px;
+  }
+  .position small {
+    display: none;
+  }
+  .race-top > div {
+    padding: 9px 8px;
+  }
+  .menu-links .quiet-button {
+    font-size: 11px;
+  }
+}
+@media (max-width: 760px) and (max-height: 700px) {
+  .menu-footer {
+    display: none;
+  }
+}
+@media (orientation: landscape) and (max-height: 500px) {
+  #menu {
+    top: 19%;
+  }
+  .menu-links {
+    margin-top: 8px;
+  }
+  .menu-links .quiet-button {
+    min-height: 34px;
+  }
+  .race-top {
+    right: 20px;
+  }
+  .race-top > div {
+    padding: 7px 12px;
+  }
+  .position > strong {
+    font-size: 32px;
+  }
+  .race-utilities,
+  .corner-hint {
+    top: 126px;
+  }
+  .touch-controls button,
+  .steering-pad {
+    height: 66px;
+  }
+  .steering-pad > b {
+    top: 22px;
+    width: 36px;
+    height: 36px;
+    left: calc(50% - 18px);
+    font-size: 27px;
+  }
+  .speed-wrap {
+    bottom: 94px;
+  }
+  .map-wrap {
+    bottom: 98px;
+  }
+  .touch-device .touch-controls {
+    bottom: max(12px, env(safe-area-inset-bottom));
+  }
+  .control-dialog {
+    max-height: calc(100dvh - 20px);
+  }
+}

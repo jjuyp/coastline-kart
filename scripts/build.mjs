@@ -24,7 +24,9 @@ const result = await esbuild.build({
   legalComments: 'inline',
 });
 let html = readFileSync(path.join(root, 'index.html'), 'utf8');
-const css = readFileSync(path.join(root, 'src/style.css'), 'utf8');
+const css = ['style.css', 'controls.css']
+  .map((name) => readFileSync(path.join(root, 'src', name), 'utf8'))
+  .join('\n');
 html = html
   .replace('<!--STYLE-->', () => '<style>' + css + '</style>')
   .replace(

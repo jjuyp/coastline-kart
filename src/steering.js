@@ -21,7 +21,26 @@ export class ProgressiveSteering {
     this.value = 0;
   }
 
-  update(dt, direction, speed) {
+  limit(speed, sensitivity = 1) {
+    const speedRatio = clamp((Math.abs(speed) - 12) / 25, 0, 1);
+    return clamp(
+      (SETTINGS.slowSpeedLimit + (SETTINGS.fastSpeedLimit - SETTINGS.slowSpeedLimit) * speedRatio) *
+        sensitivity,
+      0,
+      0.95,
+    );
+  }
+
+  updateAnalog(dt, axis, speed, sensitivity = 1) {
+    this.direction = Math.sign(axis);
+    this.heldSeconds = 0;
+    const target = clamp(axis, -1, 1) * this.limit(speed, sensitivity);
+    const rate = axis === 0 ? SETTINGS.centeringPerSecond : 3.2;
+    this.value += clamp(target - this.value, -rate * dt, rate * dt);
+    return this.value;
+  }
+
+  update(dt, direction, speed, sensitivity = 1) {
     direction = Math.sign(direction);
     if (direction !== this.direction) {
       // A fresh tap or an opposite turn starts gently instead of inheriting full lock.
@@ -34,9 +53,7 @@ export class ProgressiveSteering {
     if (direction !== 0) {
       this.heldSeconds = Math.min(SETTINGS.fullLockSeconds, this.heldSeconds + dt);
       const hold = this.heldSeconds / SETTINGS.fullLockSeconds;
-      const speedRatio = clamp((Math.abs(speed) - 12) / 25, 0, 1);
-      const limit =
-        SETTINGS.slowSpeedLimit + (SETTINGS.fastSpeedLimit - SETTINGS.slowSpeedLimit) * speedRatio;
+      const limit = this.limit(speed, sensitivity);
       const strength = SETTINGS.initialStrength + (1 - SETTINGS.initialStrength) * hold ** 1.15;
       target = direction * limit * strength;
     }

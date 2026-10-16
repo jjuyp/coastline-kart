@@ -16,7 +16,7 @@
     <!--STYLE-->
   </head>
   <body>
-    <canvas id="game" aria-label="夕陽海岸盃 3D 賽車畫面"></canvas>
+    <canvas id="game" tabindex="-1" aria-label="夕陽海岸盃 3D 賽車畫面"></canvas>
     <div id="vignette"></div>
     <div id="boost-lines"></div>
     <header id="header">
@@ -27,6 +27,7 @@
       >
       <div class="top-actions">
         <span class="live-weather">☀ <b>28°</b> &nbsp; RIVIERA</span
+        ><button id="settings" class="icon-btn" aria-label="操作與設定" title="操作與設定">⚙</button
         ><button id="quality" class="icon-btn" aria-label="切換畫質" title="切換畫質">HQ</button
         ><button id="mute" class="icon-btn" aria-label="關閉音效" title="音效 M">♫</button
         ><button id="fullscreen" class="icon-btn" aria-label="全螢幕" title="全螢幕">⛶</button
@@ -71,6 +72,12 @@
         <span><kbd>W A S D</kbd> / <kbd>↑ ← ↓ →</kbd> 駕駛</span
         ><span><kbd>SPACE</kbd> 按住甩尾，放開加速</span>
       </div>
+      <div class="menu-links">
+        <button id="help" class="quiet-button" aria-label="第一次遊玩，查看操作說明">
+          操作說明 ↗
+        </button>
+        <button id="menu-settings" class="quiet-button">調整操作 ⚙</button>
+      </div>
       <div class="menu-footer">
         <span>HANDCRAFTED TURNS. ENDLESS SUMMER.</span
         ><span id="best-label">你的第一場海岸冒險</span>
@@ -96,6 +103,15 @@
         </div>
       </div>
       <div id="leaderboard"></div>
+      <div class="race-utilities">
+        <button id="camera-toggle" class="quiet-button" aria-label="切換追逐視角">◉ 視角</button>
+        <button id="rescue" class="quiet-button" aria-label="回正車輛，增加兩秒">
+          ↺ 回正 <small>+2s</small>
+        </button>
+      </div>
+      <div id="corner-hint" class="corner-hint">
+        <b id="corner-arrow">↑</b><span id="corner-text">保持節奏</span>
+      </div>
       <div class="map-wrap">
         <canvas id="minimap" width="300" height="260" aria-label="賽道小地圖"></canvas
         ><span>RIVIERA RUN</span>
@@ -107,17 +123,24 @@
         <span id="drift-label">SPACE · 甩尾蓄能</span>
       </div>
       <div class="race-help">
+        <button id="auto-toggle" class="quiet-button" aria-pressed="false">自動油門：關</button>
         <span><kbd>SPACE</kbd> 甩尾</span><span><kbd>R</kbd> 回正</span
         ><span><kbd>C</kbd> 視角</span><span><kbd>ESC</kbd> 暫停</span>
       </div>
       <div class="touch-controls">
-        <div>
-          <button data-control="left" aria-label="左轉">‹</button
-          ><button data-control="right" aria-label="右轉">›</button>
+        <div class="steering-buttons">
+          <button data-control="left" aria-label="左轉">‹<small>左轉</small></button
+          ><button data-control="right" aria-label="右轉">›<small>右轉</small></button>
         </div>
-        <div>
+        <div id="steering-pad" class="steering-pad" aria-label="按住並左右滑動轉向">
+          <span>按住 · 左右滑動</span><i>‹</i><b>◉</b><i>›</i>
+        </div>
+        <div class="pedal-buttons">
+          <button class="throttle-touch" data-control="throttle" aria-label="油門">油門</button>
           <button class="brake-touch" data-control="brake" aria-label="煞車">煞車</button
-          ><button class="drift-touch" data-control="drift" aria-label="甩尾">甩尾</button>
+          ><button class="drift-touch" data-control="drift" aria-label="按住甩尾，放開加速">
+            甩尾<small>放開加速</small>
+          </button>
         </div>
       </div>
     </section>
@@ -132,10 +155,95 @@
         <h2>海風等你。<br /><span>比賽已暫停</span></h2>
         <button id="resume" class="primary">繼續比賽 <span>LET'S GO &nbsp; ↗</span></button
         ><button id="restart-pause" class="secondary">重新開始</button>
-        <p>WASD / 方向鍵 駕駛 · SPACE 甩尾<br />R 回正（+2 秒）· C 切換視角 · M 音效</p>
+        <button id="pause-settings" class="secondary">操作與設定</button>
+        <p id="pause-controls">
+          WASD / 方向鍵 駕駛 · SPACE 甩尾<br />R 回正（+2 秒）· C 切換視角 · M 音效
+        </p>
         <button id="back-menu" class="text-button">返回海岸俱樂部</button>
       </div>
     </section>
+    <dialog id="settings-dialog" class="control-dialog" aria-labelledby="settings-title">
+      <div class="dialog-header">
+        <div>
+          <span class="micro">MAKE IT YOURS</span>
+          <h2 id="settings-title">找到你的手感。</h2>
+        </div>
+        <button class="dialog-close" data-close aria-label="關閉設定">×</button>
+      </div>
+      <p class="dialog-intro">即時套用，自動記住。比賽中開啟設定會暫停。</p>
+      <label class="setting-row" for="sensitivity"
+        ><span><b>轉向靈敏度</b><small>輕按微調，長按加深轉彎</small></span
+        ><select id="sensitivity">
+          <option value="0.8">輕柔</option>
+          <option value="1">標準</option>
+          <option value="1.15">靈敏</option>
+        </select></label
+      >
+      <label class="setting-row" for="auto-throttle"
+        ><span><b>自動油門</b><small>只需轉向；按住煞車就會減速</small></span
+        ><input id="auto-throttle" type="checkbox" role="switch"
+      /></label>
+      <label class="setting-row" for="touch-mode"
+        ><span><b>觸控轉向方式</b><small>滑動可精細控制轉彎幅度</small></span
+        ><select id="touch-mode">
+          <option value="buttons">左右按鍵</option>
+          <option value="pad">滑動轉向</option>
+        </select></label
+      >
+      <label class="setting-row" for="camera-setting"
+        ><span><b>追逐視角</b><small>高位視角能更早看見彎道</small></span
+        ><select id="camera-setting">
+          <option value="0">標準</option>
+          <option value="1">高位</option>
+        </select></label
+      >
+      <label class="setting-row" for="quality-setting"
+        ><span><b>畫面品質</b><small>裝置較慢時可選擇省電模式</small></span
+        ><select id="quality-setting">
+          <option value="hq">精緻 HQ</option>
+          <option value="eco">省電 ECO</option>
+        </select></label
+      >
+      <button class="primary dialog-done" data-close>設定好了 <span>LET'S DRIVE ↗</span></button>
+    </dialog>
+    <dialog id="help-dialog" class="control-dialog" aria-labelledby="help-title">
+      <div class="dialog-header">
+        <div>
+          <span class="micro">YOUR FIRST COASTAL RUN</span>
+          <h2 id="help-title">三步，開上賽道。</h2>
+        </div>
+        <button class="dialog-close" data-close aria-label="關閉操作說明">×</button>
+      </div>
+      <ol class="driving-guide">
+        <li>
+          <span>01</span>
+          <div>
+            <h3>直線加速，入彎收一點</h3>
+            <p>電腦用 W / ↑ 加速、S / ↓ 煞車。手機預設自動油門；電腦也可以在設定開啟。</p>
+          </div>
+        </li>
+        <li>
+          <span>02</span>
+          <div>
+            <h3>短按微調，長按轉大彎</h3>
+            <p>A D / ← → 控制左右。手機可用左右按鍵，或改成按住後左右滑動的精細轉向。</p>
+          </div>
+        </li>
+        <li>
+          <span>03</span>
+          <div>
+            <h3>彎中甩尾，出彎放開</h3>
+            <p>轉彎時按住 SPACE / 甩尾，蓄能變藍後放開就能加速；變金色可得到更長加速。</p>
+          </div>
+        </li>
+      </ol>
+      <p class="guide-note">
+        卡住時按 R 或「↺ 回正」（+2 秒）。離開分頁會自動暫停，回來後按「繼續比賽」。
+      </p>
+      <button class="primary dialog-done" data-close>
+        準備好了 <span>SEA YOU AT THE FINISH ↗</span>
+      </button>
+    </dialog>
     <section id="results" class="modal hidden">
       <div class="results-card">
         <span class="micro">COASTLINE CUP · RACE COMPLETE</span>
