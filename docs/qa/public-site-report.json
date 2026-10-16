@@ -1,0 +1,14 @@
+{
+  "pass": true,
+  "url": "https://coastline-kart-riviera-run.jjuyp.chatgpt.site/",
+  "title": "COASTLINE KART — 夕陽海岸盃",
+  "httpStatus": 200,
+  "anonymousContext": true,
+  "race": "racing",
+  "speed": 19.431903581321404,
+  "steering": {
+    "heldSeconds": 0.3000000000000001,
+    "command": 0.27553650356179976
+  },
+  "errors": []
+}

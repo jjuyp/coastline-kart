@@ -3,6 +3,9 @@
 A finished, browser-native coastal kart racer. All geometry, textures, signage,
 music and sound are procedurally generated locally. No Roblox Studio or Blender.
 
+**[Play online — 夕陽海岸盃](https://coastline-kart-riviera-run.jjuyp.chatgpt.site/)**
+No login or installation is required.
+
 ![Coastline Kart gameplay](docs/screenshots/gameplay.png)
 
 ## Play

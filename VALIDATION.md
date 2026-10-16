@@ -24,7 +24,7 @@ locally; the standalone HTML makes zero external requests.
 | Offline operation | Zero HTTP/HTTPS requests during browser QA |
 | Source delivery | Source ZIP includes assets' generators, game logic, build scripts and standalone game |
 | Code formatting | JavaScript, CSS, HTML and tool scripts use the checked-in Prettier configuration; formatting check, build, full race logic and both steering verification suites pass |
-| Online hosting | No hosted deployment is required to play the checked-in standalone HTML |
+| Online hosting | Public site at https://coastline-kart-riviera-run.jjuyp.chatgpt.site/; fresh anonymous Chromium context returns HTTP 200, starts a race and verifies progressive steering without login or browser errors |
 
 Performance numbers describe this workstation's Chromium run, not physical phone
 hardware. Screenshots and machine-readable reports are in `output/playwright/`.
