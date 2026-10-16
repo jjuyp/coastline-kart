@@ -1,0 +1,224 @@
+{
+  "pass": true,
+  "measurements": [
+    {
+      "version": "before",
+      "control": "ArrowLeft",
+      "seconds": 0.1,
+      "degrees": 0.6725633525801512
+    },
+    {
+      "version": "before",
+      "control": "ArrowLeft",
+      "seconds": 0.3,
+      "degrees": 7.802402829487393
+    },
+    {
+      "version": "before",
+      "control": "ArrowLeft",
+      "seconds": 0.6,
+      "degrees": 24.27413418192755
+    },
+    {
+      "version": "before",
+      "control": "ArrowLeft",
+      "seconds": 1,
+      "degrees": 52.744395267487626
+    },
+    {
+      "version": "before",
+      "control": "ArrowRight",
+      "seconds": 0.1,
+      "degrees": 0.6453895270679567
+    },
+    {
+      "version": "before",
+      "control": "ArrowRight",
+      "seconds": 0.3,
+      "degrees": 7.23404477777291
+    },
+    {
+      "version": "before",
+      "control": "ArrowRight",
+      "seconds": 0.6,
+      "degrees": 24.802148646804504
+    },
+    {
+      "version": "before",
+      "control": "ArrowRight",
+      "seconds": 1,
+      "degrees": 51.415542837895146
+    },
+    {
+      "version": "after",
+      "control": "ArrowLeft",
+      "seconds": 0.1,
+      "degrees": 0.06237930351551265,
+      "steer": 0.072405869245733,
+      "command": 0.151457544190802
+    },
+    {
+      "version": "after",
+      "control": "ArrowLeft",
+      "seconds": 0.3,
+      "degrees": 1.0118192329013123,
+      "steer": 0.20392732844047273,
+      "command": 0.2757048545178466
+    },
+    {
+      "version": "after",
+      "control": "ArrowLeft",
+      "seconds": 0.6,
+      "degrees": 5.650025660687695,
+      "steer": 0.4110684921667421,
+      "command": 0.48704028075893596
+    },
+    {
+      "version": "after",
+      "control": "ArrowLeft",
+      "seconds": 1,
+      "degrees": 19.8597367439288,
+      "steer": 0.6940530097904826,
+      "command": 0.7384118126613759
+    },
+    {
+      "version": "after",
+      "control": "ArrowRight",
+      "seconds": 0.1,
+      "degrees": 0.048257509020806166,
+      "steer": -0.06644865646397534,
+      "command": -0.14706845981703492
+    },
+    {
+      "version": "after",
+      "control": "ArrowRight",
+      "seconds": 0.3,
+      "degrees": 1.0145401122245494,
+      "steer": -0.2038041491491359,
+      "command": -0.27553650356179976
+    },
+    {
+      "version": "after",
+      "control": "ArrowRight",
+      "seconds": 0.6,
+      "degrees": 6.023970629027873,
+      "steer": -0.4231853331241455,
+      "command": -0.49940654279617597
+    },
+    {
+      "version": "after",
+      "control": "ArrowRight",
+      "seconds": 1,
+      "degrees": 19.27349309349194,
+      "steer": -0.6931253834587847,
+      "command": -0.7415037547314937
+    },
+    {
+      "version": "after",
+      "control": "touch left",
+      "samples": [
+        {
+          "seconds": 0.1,
+          "degrees": 0.0649696461360707,
+          "steer": 0.0718824891014977
+        },
+        {
+          "seconds": 0.7,
+          "degrees": 8.411710139783219,
+          "steer": 0.4788162949381643
+        }
+      ]
+    },
+    {
+      "version": "after",
+      "control": "touch right",
+      "samples": [
+        {
+          "seconds": 0.1,
+          "degrees": 0.05008844599054628,
+          "steer": -0.06604985542298301
+        },
+        {
+          "seconds": 0.7,
+          "degrees": 8.410728720747954,
+          "steer": -0.4789913605457264
+        }
+      ]
+    }
+  ],
+  "checks": [
+    {
+      "label": "ArrowLeft short tap reduced by at least 40%",
+      "pass": true
+    },
+    {
+      "label": "ArrowLeft long hold remains gentler",
+      "pass": true
+    },
+    {
+      "label": "ArrowLeft angle increases with hold duration",
+      "pass": true
+    },
+    {
+      "label": "ArrowLeft steering strength increases with hold duration",
+      "pass": true
+    },
+    {
+      "label": "ArrowRight short tap reduced by at least 40%",
+      "pass": true
+    },
+    {
+      "label": "ArrowRight long hold remains gentler",
+      "pass": true
+    },
+    {
+      "label": "ArrowRight angle increases with hold duration",
+      "pass": true
+    },
+    {
+      "label": "ArrowRight steering strength increases with hold duration",
+      "pass": true
+    },
+    {
+      "label": "release centers steering",
+      "pass": true
+    },
+    {
+      "label": "release clears hold duration",
+      "pass": true
+    },
+    {
+      "label": "opposite turn starts gently",
+      "pass": true
+    },
+    {
+      "label": "pause clears held steering",
+      "pass": true
+    },
+    {
+      "label": "restart clears held steering",
+      "pass": true
+    },
+    {
+      "label": "touch left long hold turns more than tap",
+      "pass": true
+    },
+    {
+      "label": "touch right long hold turns more than tap",
+      "pass": true
+    },
+    {
+      "label": "high speed reduces maximum angle",
+      "pass": true
+    },
+    {
+      "label": "30/60/120 Hz produce matching steering",
+      "pass": true
+    },
+    {
+      "label": "no browser errors",
+      "pass": true
+    }
+  ],
+  "errors": []
+}
